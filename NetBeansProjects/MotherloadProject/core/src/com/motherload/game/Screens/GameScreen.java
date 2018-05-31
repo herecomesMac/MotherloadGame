@@ -149,7 +149,7 @@ public class GameScreen implements Screen{
             player.body.applyLinearImpulse(new Vector2(0, -0.1f), player.body.getWorldCenter(), true);
         
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -200)
-            player.body.applyLinearImpulse( new Vector2(50f,0), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse( new Vector2(-50f,0), player.body.getWorldCenter(), true);
         
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 200)
             player.body.applyLinearImpulse( new Vector2(50f,0), player.body.getWorldCenter(), true);
