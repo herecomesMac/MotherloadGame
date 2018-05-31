@@ -2,27 +2,27 @@ package com.motherload.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.motherload.game.Screens.TitleScreen;
 
 public class Motherload extends Game {
+        public SpriteBatch batch;
 	static public Skin skin;
-	static public TextureAtlas textureAtlas;
+        //Pixel per meter
+        public static final float PPM = 100;
 
 	@Override
 	public void create () {
+            batch = new SpriteBatch();
             skin = new Skin(Gdx.files.internal("glassy-ui.json"));
-            textureAtlas = new TextureAtlas();
-            textureAtlas.addRegion("actor",new TextureRegion(new Texture("actor.png")));
-            this.setScreen(new TitleScreen(this));
+            setScreen(new TitleScreen(this));
 	}
+        
 
 	@Override
 	public void render () {
-		super.render();
+            super.render();
 	}
 	
 	@Override

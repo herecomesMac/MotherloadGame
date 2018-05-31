@@ -1,30 +1,26 @@
 package com.motherload.game.Bodies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.motherload.game.Screens.TitleScreen;
+import com.motherload.game.Motherload;
 
-public class Actor extends Image{
-    private Body body;
-    private World world;
-    final float STEP = 5f;
+public class Actor extends Sprite{
+    public Body body;
+    public World world;
     
-    public Actor(World aworld, float pos_x,float pos_y){
-        super(new Texture("actor.png"));
-        world = aworld;
-        this.setPosition(pos_x, pos_y);
+    public Actor(World aworld){
+        //super(new Texture("actor.png"));
+        this.world = aworld;
+        defineActor();
         
-        BodyDef bodyDef = new BodyDef();
+        /*BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(pos_x, pos_y);
         body = world.createBody(bodyDef);
@@ -43,36 +39,19 @@ public class Actor extends Image{
 
         
         shape.dispose();
-        this.setOrigin(this.getWidth()/2,this.getHeight()/2);
+        this.setOrigin(this.getWidth()/2,this.getHeight()/2);*/
     }
     
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-    }
-
-    @Override
-    public void act(float delta) {
-        super.act(delta);        
+    public void defineActor(){
+        BodyDef bdef = new BodyDef();
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        bdef.position.set(200,1400);
+        body = world.createBody(bdef);
         
-        if(Gdx.input.isKeyPressed(Keys.UP))
-            this.setPosition(getX(), getY() + STEP);
-        if(Gdx.input.isKeyPressed(Keys.LEFT)){
-            if(this.getX() == 0){
-                this.setPosition(0, getY());
-            } else{
-                this.setPosition(getX() - STEP, getY());}
-        }
-        if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-            if(this.getX() == 740){
-                this.setPosition(740, getY());
-            }else{
-                this.setPosition(getX() + STEP, getY());}
-        }
-        if(Gdx.input.isKeyPressed(Keys.DOWN))
-            this.setPosition(getX(), getY() - STEP);
-    }
-    
-  
-    
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(10);
+        fdef.shape = shape;
+        body.createFixture(fdef);
+    }   
 }
