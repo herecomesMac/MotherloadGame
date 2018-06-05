@@ -19,7 +19,7 @@ public class Actor extends Sprite{
     public World world;
     
     public Actor(World world){
-        //Texture texture = new Texture("actor.png");
+        Texture texture = new Texture("actor.png");
         this.world = world;
         //setBounds(0, 0, 50, 50);
         //setRegion(texture);
@@ -40,8 +40,8 @@ public class Actor extends Sprite{
         FixtureDef fdef = new FixtureDef();
         //PolygonShape shape = new PolygonShape();
         //shape.setAsBox(5, 5);
-        CircleShape shape = new CircleShape();
-        shape.setRadius(10);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(10,10);
         fdef.filter.categoryBits = Motherload.ACTOR_BIT;
         fdef.filter.maskBits = Motherload.GROUND_BIT;
         
@@ -55,6 +55,20 @@ public class Actor extends Sprite{
         fdef.isSensor = true;
         
         body.createFixture(fdef).setUserData("feet");
+        
+        EdgeShape left = new EdgeShape();
+        left.set(new Vector2(10,-6), new Vector2(10,6));
+        fdef.shape = left;
+        fdef.isSensor = true;
+        
+        body.createFixture(fdef).setUserData("left");
+        
+        EdgeShape right = new EdgeShape();
+        right.set(new Vector2(-10,-6), new Vector2(-10,6));
+        fdef.shape = right;
+        fdef.isSensor = true;
+        
+        body.createFixture(fdef).setUserData("right");
         
         
     }   

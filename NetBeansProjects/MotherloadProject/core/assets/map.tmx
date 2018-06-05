@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="2017.07.26" orientation="orthogonal" renderorder="left-down" width="16" height="25" tilewidth="50" tileheight="50" nextobjectid="402">
  <tileset firstgid="1" source="gutter.tsx"/>
- <layer name="Tile Layer 1" width="16" height="25">
+ <layer name="background" width="16" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYBrFo3gUj+JRPIpJxADRBwMh
+  </data>
+ </layer>
+ <layer name="Graphis" width="16" height="25">
   <data encoding="base64" compression="zlib">
    eJxjZGBgYBzkmGkQuIEUt+JzLxMRakgND1qGz2AJe3xhhk0Om1p8+kmNR1qnE1rrp1ZcE6uHFLMJxScxfqdXHqHUXHLcSUrc0zr/AgBUWwG3
   </data>
  </layer>
- <objectgroup name="Collitions">
+ <objectgroup name="Collitions" visible="0" opacity="0.99">
   <object id="1" x="0" y="0" width="50" height="50"/>
   <object id="3" x="50" y="0" width="50" height="50"/>
   <object id="4" x="100" y="0" width="50" height="50"/>

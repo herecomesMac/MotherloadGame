@@ -19,10 +19,11 @@ public class WorldContactListener implements ContactListener{
         //Este método usa duas fixtures e testa quais delas é a o pé e qual é o objeto interativo
         Fixture fixA = cntct.getFixtureA();
         Fixture fixB = cntct.getFixtureB();
+        Fixture object;
         
         if(fixA.getUserData() == "feet" || fixB.getUserData() == "feet"){
             Fixture feet = fixA.getUserData() == "feet" ? fixA : fixB;
-            Fixture object = feet == fixA ? fixB : fixA;
+            object = feet == fixA ? fixB : fixA;
             
             //object.getUserData() != null && InteractiveBlocks.class.isAssignableFrom(object.getClass())
             if(object.getUserData() instanceof InteractiveBlocks){
@@ -30,7 +31,29 @@ public class WorldContactListener implements ContactListener{
                     ((InteractiveBlocks) object.getUserData()).onFeetHit();
                 //if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
             }
+        }else if(fixA.getUserData() == "left" || fixB.getUserData() == "left"){
+            Fixture left = fixA.getUserData() == "left" ? fixA : fixB;
+            object = left == fixA ? fixB : fixA;
+            
+            //object.getUserData() != null && InteractiveBlocks.class.isAssignableFrom(object.getClass())
+            if(object.getUserData() instanceof InteractiveBlocks){
+                if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
+                    ((InteractiveBlocks) object.getUserData()).onFeetHit();
+                //if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            }
+        }else if(fixA.getUserData() == "right" || fixB.getUserData() == "right"){
+            Fixture right = fixA.getUserData() == "right" ? fixA : fixB;
+            object = right == fixA ? fixB : fixA;
+            
+            //object.getUserData() != null && InteractiveBlocks.class.isAssignableFrom(object.getClass())
+            if(object.getUserData() instanceof InteractiveBlocks){
+                if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+                    ((InteractiveBlocks) object.getUserData()).onFeetHit();
+                //if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            }
         }
+        
+        
     }
 
     @Override
@@ -38,13 +61,34 @@ public class WorldContactListener implements ContactListener{
         //Este método usa duas fixtures e testa quais delas é a o pé e qual é o objeto interativo
         Fixture fixA = cntct.getFixtureA();
         Fixture fixB = cntct.getFixtureB();
+        Fixture object;
         
         if(fixA.getUserData() == "feet" || fixB.getUserData() == "feet"){
             Fixture feet = fixA.getUserData() == "feet" ? fixA : fixB;
-            Fixture object = feet == fixA ? fixB : fixA;
+            object = feet == fixA ? fixB : fixA;
             
+            //object.getUserData() != null && InteractiveBlocks.class.isAssignableFrom(object.getClass())
+            if(object.getUserData() instanceof InteractiveBlocks){                
+                    ((InteractiveBlocks) object.getUserData()).onFeetHit();
+                //if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            }
+        }else if(fixA.getUserData() == "left" || fixB.getUserData() == "left"){
+            Fixture left = fixA.getUserData() == "left" ? fixA : fixB;
+            object = left == fixA ? fixB : fixA;
+            
+            //object.getUserData() != null && InteractiveBlocks.class.isAssignableFrom(object.getClass())
             if(object.getUserData() instanceof InteractiveBlocks){
-                ((InteractiveBlocks) object.getUserData()).onFeetHit();
+                    ((InteractiveBlocks) object.getUserData()).onFeetHit();
+                //if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            }
+        }else if(fixA.getUserData() == "right" || fixB.getUserData() == "right"){
+            Fixture right = fixA.getUserData() == "right" ? fixA : fixB;
+            object = right == fixA ? fixB : fixA;
+            
+            //object.getUserData() != null && InteractiveBlocks.class.isAssignableFrom(object.getClass())
+            if(object.getUserData() instanceof InteractiveBlocks){
+                    ((InteractiveBlocks) object.getUserData()).onFeetHit();
+                //if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             }
         }
     }

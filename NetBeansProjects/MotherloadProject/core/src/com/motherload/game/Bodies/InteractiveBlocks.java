@@ -52,7 +52,7 @@ public abstract class InteractiveBlocks {
    }
    
    public TiledMapTileLayer.Cell getCell(){
-       TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+       TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
        return layer.getCell((int)body.getPosition().x/25, (int)body.getPosition().y/25);
    }
 }
