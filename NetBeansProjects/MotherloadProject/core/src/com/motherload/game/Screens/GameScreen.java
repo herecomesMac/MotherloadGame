@@ -15,12 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.motherload.game.Bodies.Actor;
-import com.motherload.game.Bodies.Ground;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMap;    
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -31,6 +30,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.motherload.game.Scenes.Hud;
 import com.motherload.game.Motherload;
+import com.motherload.game.Tools.WorldContactListener;
+import com.motherload.game.Tools.WorldCreator;
 
 
 public class GameScreen implements Screen{
@@ -62,7 +63,7 @@ public class GameScreen implements Screen{
         
         //Mexendo na câmera
         gamecam = new OrthographicCamera();
-        gamePort = new FitViewport(800, 600,gamecam);
+        gamePort = new FitViewport(Motherload.V_WIDTH, Motherload.V_HEIGHT,gamecam);
         
         //Vidas e Óleo
         hud = new Hud(game.batch);
@@ -71,7 +72,7 @@ public class GameScreen implements Screen{
         maploader = new TmxMapLoader();
         map = maploader.load("map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
-        gamecam.position.set(400,1160,0);
+        gamecam.position.set(400,1210,0);
         
         //Fisica do Mundo e seu renderizador
         b2dr = new Box2DDebugRenderer();
@@ -81,59 +82,23 @@ public class GameScreen implements Screen{
         stage = new Stage(new ScreenViewport(), game.batch);
         
         
-        //Criando o fundo -- Mudar depois para apenas uma imagem estática
-        Texture texture0 = new Texture(Gdx.files.internal("img1.png"));
-        Texture texture1 = new Texture(Gdx.files.internal("img2.png"));
-        Texture texture2 = new Texture(Gdx.files.internal("img3.png"));
-        Texture texture3 = new Texture(Gdx.files.internal("img4.png"));
-        Texture sun0 = new Texture(Gdx.files.internal("sun.png"));
+        //Criando o fundo
+        Texture texture = new Texture(Gdx.files.internal("background.png"));
+        Image background = new Image(texture);
+        stage.addActor(background);
         
-        Image back0 = new Image(texture0);
-        Image back1 = new Image(texture1);
-        Image back2 = new Image(texture2);        
-        Image back3 = new Image(texture3);
-        Image sun_big = new Image(sun0);
-        Image sun_small = new Image(sun0);
-        sun_small.setSize(60, 50);
-        sun_small.setPosition(620, 480);
-        sun_big.setPosition(650, 500);
         
-        stage.addActor(back0);
-        stage.addActor(sun_big);
-        stage.addActor(sun_small);
-        stage.addActor(back1);
-        stage.addActor(back2);
-        stage.addActor(back3);
+        //Criando um blocos do TitledMap
+        new WorldCreator(world, map);
         
+       //Criando o jogador
         player = new Actor(world);
         
-        //Criando a física do mundo
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
-        
-        for(MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX()+rect.getWidth()/2), (rect.getY()+rect.getHeight()/2));
-            body = world.createBody(bdef);
-            
-            shape.setAsBox(rect.getWidth()/2, rect.getHeight()/2);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-            
-        }
+       //Criando a lógica das colisões
+       world.setContactListener(new WorldContactListener());
         
         
-        //Ground ground = new Ground(world, 0);
-        //stage.addActor(ground);
         
-        //stage.addActor(player);
-        
-        //player.setTouchable(Touchable.enabled);
-        
-
     }
     
     @Override
@@ -142,17 +107,17 @@ public class GameScreen implements Screen{
     }
 
     public void handleInput(float dt){
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) && player.body.getLinearVelocity().y <=2)
-            player.body.applyLinearImpulse( new Vector2(0,0.1f), player.body.getWorldCenter(), true);
+        if(Gdx.input.isKeyPressed(Input.Keys.UP))
+            player.body.applyLinearImpulse(new Vector2(0,50f), player.body.getWorldCenter(), true);
         
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && player.body.getLinearVelocity().y <=2)
-            player.body.applyLinearImpulse(new Vector2(0, -0.1f), player.body.getWorldCenter(), true);
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && player.body.getLinearVelocity().y >=-200)
+            player.body.applyLinearImpulse(new Vector2(0, -50f), player.body.getWorldCenter(), true);
         
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -200)
-            player.body.applyLinearImpulse( new Vector2(-50f,0), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse(new Vector2(-50f,0), player.body.getWorldCenter(), true);
         
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 200)
-            player.body.applyLinearImpulse( new Vector2(50f,0), player.body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            player.body.applyLinearImpulse(new Vector2(50f,0), player.body.getWorldCenter(), true);
     }
     
     public void update(float dt){
@@ -160,9 +125,12 @@ public class GameScreen implements Screen{
         handleInput(dt);
 
         //Calcula o tempo em que a simulação da física é calculada(60/s)
+        player.update(dt);
         world.step(1/60f, 6, 2);
         
-        //gamecam.position.y = player.body.getPosition().y;
+        
+        gamecam.position.y = player.getY()-100;
+   
         
         gamecam.update();
         renderer.setView(gamecam);
@@ -188,9 +156,11 @@ public class GameScreen implements Screen{
         //Renderiza o Box2DDebugRenderer
         b2dr.render(world, gamecam.combined);
         
-        
         //Desenha o batch e o hud
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        //game.batch.begin();
+        //player.draw(game.batch);
+        //game.batch.end();
         hud.stage.draw();
     }
 
@@ -217,7 +187,11 @@ public class GameScreen implements Screen{
 
     @Override
     public void dispose() {
-        stage.dispose();
+        //stage.dispose();
+        map.dispose();
+        renderer.dispose();
+        world.dispose();
+        hud.dispose();
     }
 
 }

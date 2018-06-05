@@ -1,49 +1,42 @@
 package com.motherload.game.Bodies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+import static com.badlogic.gdx.Gdx.input;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.motherload.game.Motherload;
 
-public class Ground extends Image{
-    private Body body;
-    private World world;
+public class Ground extends InteractiveBlocks{
     
-    public Ground(World w, float pos_y){
-        super(new Texture(Gdx.files.internal("img4.png")));
-        this.setOrigin(this.getWidth()/2,this.getHeight()/2);
-        this.setPosition(0,pos_y);
-        world = w;
+    public Ground(World world, TiledMap map, Rectangle bounds){
+        super(world, map, bounds);
+        BodyDef bdef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
         
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.position.set(new Vector2(0, pos_y));
+        bdef.type = BodyDef.BodyType.StaticBody;
+        bdef.position.set((bounds.getX()+bounds.getWidth()), (bounds.getY()+bounds.getHeight()));
+        body = world.createBody(bdef);
         
-        body = world.createBody(groundBodyDef);
-
+        shape.setAsBox(bounds.getWidth(), bounds.getHeight());
+        fdef.shape = shape;
+        body.createFixture(fdef);
         
-        PolygonShape ground = new PolygonShape();
-        ground.setAsBox(Gdx.graphics.getWidth(), 393);
-        
-
-        body.createFixture(ground, 1.0f);
-        ground.dispose();
-        
-    }
-    
-    @Override
-    public void act(float delta) {
-        super.act(delta);
+        fixture.setUserData(this);
+        setCategoryFilter(Motherload.GROUND_BIT);
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
+    public void onFeetHit() {
+        Gdx.app.log("Ground", "Collision");
+        setCategoryFilter(Motherload.DESTROYED_BIT);
+        getCell().setTile(null);
     }
-    
     
 }
