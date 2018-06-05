@@ -26,7 +26,8 @@ public class WorldContactListener implements ContactListener{
             
             //object.getUserData() != null && InteractiveBlocks.class.isAssignableFrom(object.getClass())
             if(object.getUserData() instanceof InteractiveBlocks){
-                ((InteractiveBlocks) object.getUserData()).onFeetHit();
+                if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
+                    ((InteractiveBlocks) object.getUserData()).onFeetHit();
                 //if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
             }
         }
