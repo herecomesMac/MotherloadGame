@@ -7,15 +7,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.motherload.game.Motherload;
 
+
 public class TitleScreen implements Screen{
+
     private Stage stage;
     private Motherload game;
     
@@ -54,6 +59,8 @@ public class TitleScreen implements Screen{
         stage.addActor(back3);
         stage.addActor(title);
         stage.addActor(start);
+
+        blink(start);
         
         //Checa se a tecla espaço foi digitada para começar a animação
         stage.addListener(new InputListener(){
@@ -65,7 +72,7 @@ public class TitleScreen implements Screen{
                     back2.addAction(Actions.moveTo(0, 0, 0.5f));
                     back3.addAction(Actions.moveTo(0, 0, 0.5f));
                     title.addAction(Actions.moveTo(0, 1000, 0.8f));
-                    start.addAction(Actions.moveTo(0, -600, 0.8f));                    
+                    start.addAction(Actions.moveTo(0, -600, 0.8f));   
                     return true;
                 }else if(keycode == Keys.ENTER){
                     game.setScreen(new GameScreen(game));
@@ -75,6 +82,32 @@ public class TitleScreen implements Screen{
             }
         });
    
+        
+    }
+    
+    public void blink(final Image image){
+        
+        Texture texture = new Texture(Gdx.files.internal("blanck.png"));
+        final Image image1 = new Image(texture);
+        
+        SequenceAction actions=Actions.sequence(Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    image.setVisible(true);
+                    image1.setVisible(false);
+                }
+            }),Actions.delay(.2f),Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    image.setVisible(false);
+                    image1.setVisible(true);
+
+                }
+            }),Actions.delay(.2f));
+
+        Action myAction=Actions.forever(actions);  //or not forever
+        stage.addAction(myAction);
+        
         
     }
 
@@ -98,7 +131,7 @@ public class TitleScreen implements Screen{
     }
 
     @Override
-    public void pause() {
+    public void pause() { 
         
     }
 

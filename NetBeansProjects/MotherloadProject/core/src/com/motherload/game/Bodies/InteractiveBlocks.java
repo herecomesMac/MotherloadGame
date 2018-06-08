@@ -51,8 +51,8 @@ public abstract class InteractiveBlocks {
        fixture.setFilterData(filter);
    }
    
-   public TiledMapTileLayer.Cell getCell(){
+   public TiledMapTileLayer getCell(){
        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
-       return layer.getCell((int)body.getPosition().x/25, (int)body.getPosition().y/25);
+       return layer;
    }
 }

@@ -21,7 +21,7 @@ public class Ground extends InteractiveBlocks{
     public void onFeetHit() {
         Gdx.app.log("Ground", "Collision");
         setCategoryFilter(Motherload.DESTROYED_BIT);
-        //getCell().setTile(null);
+        getCell().setCell((int)body.getPosition().x/25, (int)body.getPosition().y/25, null);
     }
     
 }
