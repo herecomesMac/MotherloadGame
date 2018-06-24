@@ -38,18 +38,15 @@ public class Actor extends Sprite{
         body = world.createBody(bdef);
         
         FixtureDef fdef = new FixtureDef();
-        //PolygonShape shape = new PolygonShape();
-        //shape.setAsBox(5, 5);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(10,10);
-        fdef.filter.categoryBits = Motherload.ACTOR_BIT;
-        fdef.filter.maskBits = Motherload.GROUND_BIT;
+
         
         fdef.shape = shape;
         body.createFixture(fdef);
         
         //Linha usada para criar as colisões
-        EdgeShape feet = new EdgeShape();
+        /*EdgeShape feet = new EdgeShape();
         feet.set(new Vector2(-5,-10),new Vector2(5,-10));
         fdef.shape = feet;
         fdef.isSensor = true;
@@ -68,8 +65,8 @@ public class Actor extends Sprite{
         fdef.shape = right;
         fdef.isSensor = true;
         
-        body.createFixture(fdef).setUserData("right");
+        body.createFixture(fdef).setUserData("right");*/
         
         
-    }   
+    }
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -15,8 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.motherload.game.Motherload;
+import java.util.ArrayList;
 
 
 public class TitleScreen implements Screen{
@@ -50,6 +54,7 @@ public class TitleScreen implements Screen{
         sun_big.setPosition(650, 500);
         final Image title = new Image(name);
         final Image start = new Image(press);
+       
         
         stage.addActor(back0);
         stage.addActor(sun_big);
@@ -85,7 +90,7 @@ public class TitleScreen implements Screen{
         
     }
     
-    public void blink(final Image image){
+    private void blink(final Image image){
         
         Texture texture = new Texture(Gdx.files.internal("blanck.png"));
         final Image image1 = new Image(texture);
@@ -122,7 +127,6 @@ public class TitleScreen implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
-        
     }
 
     @Override
