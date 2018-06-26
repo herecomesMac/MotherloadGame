@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -22,12 +23,13 @@ import java.util.Random;
 public class GameScreen implements Screen{
     
     private Motherload game;
-    private final Block[][] map = new Block[16][12];
+    private final Block[][] map = new Block[16][25];
     private SpriteBatch batch;
     private Block block;
     private Player player;
     private OrthographicCamera camera;
-    private float playerX=500, playerY=500, playerSpeed = 100.0f;
+    private Box2DDebugRenderer b2dr;    
+    private float playerX=500, playerY=1100, playerSpeed = 100.0f;
     private World world;
     private Texture texture;
     private Image background;
@@ -35,18 +37,24 @@ public class GameScreen implements Screen{
     
     public GameScreen(Motherload g){
         this.game = g;
+         
         world = new World(new Vector2(0, -2000), true);
         player = new Player(world);
+        camera = new OrthographicCamera(800 ,600);
+        
+        camera.position.set(400, 1300,0);
+        stage = new Stage();
+        b2dr = new Box2DDebugRenderer();
         
         
         Random rand = new Random();
         for(int i=0; i<16;i++){
-            map[i][12-5] = new Block(true, i, 12-5);
+            map[i][25-5] = new Block(true, i, 25-5);
         }
         
         batch = new SpriteBatch();
         for(int i = 0; i < 16; i++){
-            for(int j = 0; j < 12-5; j++){
+            for(int j = 0; j < 25-5; j++){
                 if(rand.nextInt(4)==0){
                     map[i][j] = null;                    
                 }else{
@@ -56,16 +64,14 @@ public class GameScreen implements Screen{
         
         texture = new Texture(Gdx.files.internal("background.png"));
         background = new Image(texture);
-        stage = new Stage();
-        stage.addActor(background);
-    
+        stage.addActor(background);    
     }
     
     
     public void handleInput(float dt){
         int x = (int) Math.floor(playerX)/50;
         int y = (int) Math.floor(playerY)/50;
-        if(map[x][y]==null || y>350){
+        if(map[x][y]==null || y>1000){
             playerY -= Gdx.graphics.getDeltaTime() * playerSpeed*2;}
         if(Gdx.input.isKeyPressed(Keys.DOWN)){
             if(map[x][y]!=null){
@@ -85,16 +91,18 @@ public class GameScreen implements Screen{
                 map[x+1][y+1] = null;
            }
            if(playerX < 748){
-             Gdx.app.log( "X:", String.valueOf(playerX));
              playerX += Gdx.graphics.getDeltaTime() * playerSpeed;
            }
         }
         if(Gdx.input.isKeyPressed(Keys.UP)){
             if(map[x][y+1]==null){
-                if(playerY <Gdx.graphics.getHeight()){
+                if(playerY < 1600){
                     playerY += Gdx.graphics.getDeltaTime() * playerSpeed * 3;
                 }
             }
+        }
+        if(playerY < 0){
+            playerY = 0;
         }
         
     }
@@ -109,20 +117,22 @@ public class GameScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         for(int x = 0; x < 16; x++){
-            for(int y = 0; y < 12; y++){
+            for(int y = 0; y < 25; y++){
                 if(map[x][y] != null){
                     batch.draw(map[x][y].getTexture(), (float) map[x][y].getX(), (float) map[x][y].getY());
                 }
             }
         }
-        
-        world.step(1/60f, 6, 2);
         handleInput(dt);
         batch.draw(player.getTexture(), (int)playerX, (int)playerY);
-        
+        camera.position.y = playerY;
+        camera.update();
         batch.end();
+        world.step(1/60f, 6, 2);
+     
     }
 
     @Override

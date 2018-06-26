@@ -27,23 +27,12 @@ public class Player extends Sprite{
         this.world = w;
         texture = new Texture(Gdx.files.internal("actor.png"));
         sprite = new Sprite(texture);        
-        sprite.setPosition(500, 500);
-        defineActor();
-    }
-    
-    public void defineActor(){
-        BodyDef bdef = new BodyDef();
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        body = world.createBody(bdef);
-        
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(35,35);
-        
-        fdef.shape = shape;
-        body.createFixture(fdef);
+        //sprite.setPosition(500, 1600);
     }
 
+    public void setPos(int x, int y){
+        this.setPosition(x, y);
+    }
     
     public int getLife() {
         return life;
