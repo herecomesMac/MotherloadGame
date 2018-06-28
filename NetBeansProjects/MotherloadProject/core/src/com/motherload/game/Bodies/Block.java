@@ -90,5 +90,12 @@ public class Block {
         return this.y;
     }
     
+    public int getValue(){
+        return this.valor;
+    }
+    
+    public int getID(){
+        return this.id;
+    }
     
 }

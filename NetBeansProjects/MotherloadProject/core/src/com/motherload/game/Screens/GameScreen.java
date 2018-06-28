@@ -67,6 +67,13 @@ public class GameScreen implements Screen{
         stage.addActor(background);    
     }
     
+    public void lavaCollider(Player player, Block block){
+        if(block.getValue() == -1){
+            if (player.getLife() > 0){
+                player.setLife(player.getLife()-1);
+            }
+        }
+    }
     
     public void handleInput(float dt){
         int x = (int) Math.floor(playerX)/50;
@@ -75,6 +82,7 @@ public class GameScreen implements Screen{
             playerY -= Gdx.graphics.getDeltaTime() * playerSpeed*2;}
         if(Gdx.input.isKeyPressed(Keys.DOWN)){
             if(map[x][y]!=null){
+                lavaCollider(player, map[x][y]);
                 map[x][y] = null;
             }
         }
