@@ -44,6 +44,7 @@ public class GameScreen implements Screen{
         
         camera.position.set(400, 1300,0);
         stage = new Stage();
+        stage.getViewport().setCamera(camera);
         b2dr = new Box2DDebugRenderer();
         
         
@@ -62,10 +63,11 @@ public class GameScreen implements Screen{
             }
         }
         
-        texture = new Texture(Gdx.files.internal("background.png"));
+        texture = new Texture(Gdx.files.internal("bg.png"));
         background = new Image(texture);
-        stage.addActor(background);    
+        stage.addActor(background);   
     }
+
     
     
     public void handleInput(float dt){
@@ -114,7 +116,7 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float dt) {
-        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClearColor(255/255f,0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         batch.setProjectionMatrix(camera.combined);
