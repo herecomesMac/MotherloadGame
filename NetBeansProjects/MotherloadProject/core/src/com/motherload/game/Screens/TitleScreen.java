@@ -27,33 +27,42 @@ public class TitleScreen implements Screen{
 
     private Stage stage;
     private Motherload game;
+    Texture texture0, texture1, texture2, texture3, sun0, name, press, instru, pressenter;
+    Image back0, back1, back2, back3, sun_big, sun_small, title, start, info, enter;
+    
     
     public TitleScreen(Motherload g){
         this.game = g;
         stage = new Stage(new ScreenViewport(), game.batch);
         
-        Texture texture0 = new Texture(Gdx.files.internal("img1.png"));
-        Texture texture1 = new Texture(Gdx.files.internal("img2.png"));
-        Texture texture2 = new Texture(Gdx.files.internal("img3.png"));
-        Texture texture3 = new Texture(Gdx.files.internal("img4.png"));
-        Texture sun0 = new Texture(Gdx.files.internal("sun.png"));
-        Texture name = new Texture(Gdx.files.internal("motherloadname.png"));
-        Texture press = new Texture(Gdx.files.internal("press.png"));
+        texture0 = new Texture(Gdx.files.internal("img1.png"));
+        texture1 = new Texture(Gdx.files.internal("img2.png"));
+        texture2 = new Texture(Gdx.files.internal("img3.png"));
+        texture3 = new Texture(Gdx.files.internal("img4.png"));
+        sun0 = new Texture(Gdx.files.internal("sun.png"));
+        name = new Texture(Gdx.files.internal("motherloadname.png"));
+        press = new Texture(Gdx.files.internal("press.png"));
+        instru = new Texture(Gdx.files.internal("howtoplay.png"));
+        pressenter = new Texture(Gdx.files.internal("pressenter.png"));
         
-        Image back0 = new Image(texture0);
-        final Image back1 = new Image(texture1);
+        back0 = new Image(texture0);
+        back1 = new Image(texture1);
         back1.setPosition(0,-150);
-        final Image back2 = new Image(texture2);
+        back2 = new Image(texture2);
         back2.setPosition(0, -150);
-        final Image back3 = new Image(texture3);
+        back3 = new Image(texture3);
         back3.setPosition(0, -150);
-        Image sun_big = new Image(sun0);
-        Image sun_small = new Image(sun0);
+        sun_big = new Image(sun0);
+        sun_small = new Image(sun0);
         sun_small.setSize(60, 50);
         sun_small.setPosition(620, 480);
         sun_big.setPosition(650, 500);
-        final Image title = new Image(name);
-        final Image start = new Image(press);
+        title = new Image(name);
+        start = new Image(press);
+        info = new Image(instru);
+        info.setPosition(0, -600);
+        enter = new Image(pressenter);
+        enter.setPosition(0, 900);
        
         
         stage.addActor(back0);
@@ -64,6 +73,9 @@ public class TitleScreen implements Screen{
         stage.addActor(back3);
         stage.addActor(title);
         stage.addActor(start);
+        stage.addActor(enter);
+        stage.addActor(info);
+
 
         blink(start);
         
@@ -77,10 +89,16 @@ public class TitleScreen implements Screen{
                     back2.addAction(Actions.moveTo(0, 0, 0.5f));
                     back3.addAction(Actions.moveTo(0, 0, 0.5f));
                     title.addAction(Actions.moveTo(0, 1000, 0.8f));
-                    start.addAction(Actions.moveTo(0, -600, 0.8f));   
+                    start.addAction(Actions.moveTo(0, -600, 0.8f)); 
+                    enter.addAction(Actions.moveTo(0, 0, 0.5f));
+                    info.addAction(Actions.moveTo(0,0, 0.5f));
+                    blink(enter);
                     return true;
                 }else if(keycode == Keys.ENTER){
                     game.setScreen(new GameScreen(game));
+                    return true;
+                }else if(keycode == Keys.ESCAPE){
+                    game.setScreen(new TitleScreen(game));
                     return true;
                 }
                 return true;
