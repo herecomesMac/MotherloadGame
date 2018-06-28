@@ -68,12 +68,25 @@ public class GameScreen implements Screen{
         stage.addActor(background);   
     }
 
+    public boolean cheio(Player player){
+        return player.getCapacityAtual() >= player.getCapacityTotal();
+    }
     
-    public void lavaCollider(Player player, Block block){
+    public void blockCollider(Player player, Block block){
+        switch(block.getValue()){
+            case 5:
+                
+        }
+        
+        
+        
+        
+        
         if(block.getValue() == -1){
             if (player.getLife() > 0){
                 player.setLife(player.getLife()-1);
             }
+            System.out.println(player.getLife());
         }
     }
     
@@ -84,7 +97,7 @@ public class GameScreen implements Screen{
             playerY -= Gdx.graphics.getDeltaTime() * playerSpeed*2;}
         if(Gdx.input.isKeyPressed(Keys.DOWN)){
             if(map[x][y]!=null){
-                lavaCollider(player, map[x][y]);
+                blockCollider(player, map[x][y]);
                 map[x][y] = null;
             }
         }

@@ -20,20 +20,22 @@ public class Block {
         this.y = y*50;
     }
     
-    public Block(int x, int y){
+public Block(int x, int y){
         Random rand = new Random();
         if(rand.nextInt(14) == 0){
             int r = rand.nextInt(99);
-            if(r<60){
+            if(r<=5){
                 this.id = 1;
-            }else if(r>59 && r<80){
+            }else if(r>6 && r<60){ 
                 this.id = 2;
-            }else if(r>79 && r<95){
+            }else if(r>59 && r<80){
                 this.id = 3;
-            }else if(r>94 && r<98){
+            }else if(r>79 && r<95){
                 this.id = 4;
-            }else{
+            }else if(r>94 && r<98){
                 this.id = 5;
+            }else{
+                this.id = 6;
             }
             
             switch(this.id){
@@ -44,24 +46,29 @@ public class Block {
                     this.valor = 5;
                     break;
                 case 2:
+                    texture = new Texture(Gdx.files.internal("lava.png"));
+                    this.weight = 0;
+                    this.valor = -1;
+                    break;
+                case 3:
                     texture = new Texture(Gdx.files.internal("collectables/silver.png"));
                     sprite = new Sprite(texture);
                     this.weight = 20;
                     this.valor = 25;
                     break;
-                case 3:
+                case 4:
                     texture = new Texture(Gdx.files.internal("collectables/gold.png"));
                     sprite = new Sprite(texture);
                     this.weight = 25;
                     this.valor = 200;
                     break;
-                case 4:
+                case 5:
                     texture = new Texture(Gdx.files.internal("collectables/diamond.png"));
                     sprite = new Sprite(texture);
                     this.weight = 10;
                     this.valor = 1000;
                     break;
-                case 5:
+                case 6:
                     texture = new Texture(Gdx.files.internal("collectables/diamond.png"));
                     sprite = new Sprite(texture);
                     this.weight = 10;
