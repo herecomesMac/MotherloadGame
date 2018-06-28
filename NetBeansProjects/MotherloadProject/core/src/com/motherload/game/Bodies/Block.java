@@ -78,6 +78,7 @@ public Block(int x, int y){
         }else{
             this.id = 0;
             this.valor = 0;
+            this.weight = 1;
             texture = new Texture(Gdx.files.internal("Tiles/ground.png"));
             sprite = new Sprite(texture);
         }
@@ -103,6 +104,10 @@ public Block(int x, int y){
     
     public int getID(){
         return this.id;
+    }
+
+    public int getWeight() {
+        return weight;
     }
     
 }

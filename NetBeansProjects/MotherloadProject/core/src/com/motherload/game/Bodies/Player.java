@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Player extends Sprite{
     
-    private int life, capacity;
+    private int life, capacityTotal, carga, lucro;
     private float fuel;
     private Sprite sprite;
     private Texture texture;
@@ -23,7 +23,9 @@ public class Player extends Sprite{
     public Player(World w){
         this.fuel = 20f;
         this.life = 5;
-        this.capacity = 100;
+        this.carga = 50;
+        this.capacityTotal = 100;
+        this.lucro = 0;
         this.world = w;
         texture = new Texture(Gdx.files.internal("actor.png"));
         sprite = new Sprite(texture);        
@@ -42,13 +44,10 @@ public class Player extends Sprite{
         this.life = life;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public int getCapacityTotal() {
+        return capacityTotal;
     }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
+    
 
     public float getFuel() {
         return fuel;
@@ -73,5 +72,21 @@ public class Player extends Sprite{
     public void setTexture(Texture texture) {
         this.texture = texture;
     } 
+
+    public int getCarga() {
+        return carga;
+    }
+
+    public void somaCarga(int carga) {
+        this.carga += carga;
+    }
+    
+    public void somaLucro(int lucro){
+        this.lucro += lucro;
+    }
+
+    public int getLucro() {
+        return lucro;
+    }
     
 }

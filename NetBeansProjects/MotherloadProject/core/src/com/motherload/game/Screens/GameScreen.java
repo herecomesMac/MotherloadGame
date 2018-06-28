@@ -52,7 +52,6 @@ public class GameScreen implements Screen{
         for(int i=0; i<16;i++){
             map[i][25-5] = new Block(true, i, 25-5);
         }
-        
         batch = new SpriteBatch();
         for(int i = 0; i < 16; i++){
             for(int j = 0; j < 25-5; j++){
@@ -67,60 +66,90 @@ public class GameScreen implements Screen{
         background = new Image(texture);
         stage.addActor(background);   
     }
-
-    public boolean cheio(Player player){
-        return player.getCapacityAtual() >= player.getCapacityTotal();
-    }
-    
     public void blockCollider(Player player, Block block){
         switch(block.getValue()){
-            case 5:
-                
         }
         
         
         
         
         
-        if(block.getValue() == -1){
-            if (player.getLife() > 0){
-                player.setLife(player.getLife()-1);
-            }
-            System.out.println(player.getLife());
-        }
-    }
-    
+   
     public void handleInput(float dt){
         int x = (int) Math.floor(playerX)/50;
         int y = (int) Math.floor(playerY)/50;
         if(map[x][y]==null || y>1000){
             playerY -= Gdx.graphics.getDeltaTime() * playerSpeed*2;}
+        
         if(Gdx.input.isKeyPressed(Keys.DOWN)){
-            if(map[x][y]!=null){
-                blockCollider(player, map[x][y]);
-                map[x][y] = null;
-            }
-        }
-        if(Gdx.input.isKeyPressed(Keys.LEFT)){
-            if(map[x][y+1]!=null){
-                map[x][y+1] = null;
-            }
             if(playerX > -0.1){
-                playerX -= Gdx.graphics.getDeltaTime() * playerSpeed;
+                if(map[x][y] != null && player.getCarga() < player.getCapacityTotal()){
+                    if(map[x][y].getValue() == -1){
+                        if (player.getLife() > 0){
+                            player.setLife(player.getLife()-1);
+                            map[x][y] = null;
+                        }
+                    }else{
+                        if((player.getCarga() + map[x][y].getWeight()) < player.getCapacityTotal()){
+                            player.somaCarga(map[x][y].getWeight());
+                            player.somaLucro(map[x][y].getValue());
+                            map[x][y] = null;
+                        }
+                    }
+                }
             }
         }
-        if(Gdx.input.isKeyPressed(Keys.RIGHT)){ 
-           if(map[x+1][y+1]!=null){
-                map[x+1][y+1] = null;
-           }
-           if(playerX < 748){
-             playerX += Gdx.graphics.getDeltaTime() * playerSpeed;
-           }
+        
+        if(Gdx.input.isKeyPressed(Keys.LEFT)){
+            if(playerX > -0.1){
+                if(map[x][y+1] != null && player.getCarga() < player.getCapacityTotal()){
+                    if(map[x][y+1].getValue() == -1){
+                        playerX -= Gdx.graphics.getDeltaTime() * playerSpeed;
+                        if (player.getLife() > 0){
+                            player.setLife(player.getLife()-1);
+                            map[x][y+1] = null;
+                        }
+                    }else{
+                        if((player.getCarga() + map[x][y+1].getWeight()) < player.getCapacityTotal()){
+                            playerX -= Gdx.graphics.getDeltaTime() * playerSpeed;
+                            player.somaCarga(map[x][y+1].getWeight());
+                            player.somaLucro(map[x][y+1].getValue());
+                            map[x][y+1] = null;
+                        }
+                    }
+                }else{
+                    playerX -= Gdx.graphics.getDeltaTime() * playerSpeed;
+                }
+            }
         }
+        
+        if(Gdx.input.isKeyPressed(Keys.RIGHT)){ 
+           if(playerX > -0.1){
+                if(map[x+1][y+1] != null && player.getCarga() < player.getCapacityTotal()){
+                    if(map[x+1][y+1].getValue() == -1){
+                        playerX += Gdx.graphics.getDeltaTime() * playerSpeed;
+                        if (player.getLife() > 0){
+                            player.setLife(player.getLife()-1);
+                            map[x+1][y+1] = null;
+                        }
+                    }else{
+                        if((player.getCarga() + map[x+1][y+1].getWeight()) < player.getCapacityTotal()){
+                            playerX += Gdx.graphics.getDeltaTime() * playerSpeed;
+                            player.somaCarga(map[x+1][y+1].getWeight());
+                            player.somaLucro(map[x+1][y+1].getValue());
+                            map[x+1][y+1] = null;
+                        }
+                    }
+                }else{
+                    playerX += Gdx.graphics.getDeltaTime() * playerSpeed;
+                }
+            }
+        }
+        
         if(Gdx.input.isKeyPressed(Keys.UP)){
             if(map[x][y+1]==null){
                 if(playerY < 1600){
-                    playerY += Gdx.graphics.getDeltaTime() * playerSpeed * 3;
+                    playerY += Gdx.graphics.getDeltaTime() * playerSpeed * 3 - (player.getCarga()/50);
                 }
             }
         }
@@ -150,6 +179,9 @@ public class GameScreen implements Screen{
             }
         }
         handleInput(dt);
+        if(player.getLife() == 0){
+            //tela de game over
+        }
         batch.draw(player.getTexture(), (int)playerX, (int)playerY);
         camera.position.y = playerY;
         camera.update();

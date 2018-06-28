@@ -75,9 +75,7 @@ public class TitleScreen implements Screen{
         stage.addActor(start);
         stage.addActor(enter);
         stage.addActor(info);
-
-
-        blink(start);
+blink(start);
         
         //Checa se a tecla espaço foi digitada para começar a animação
         stage.addListener(new InputListener(){
@@ -175,3 +173,4 @@ public class TitleScreen implements Screen{
     
     
 }
+    
