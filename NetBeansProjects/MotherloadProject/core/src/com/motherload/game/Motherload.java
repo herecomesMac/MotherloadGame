@@ -1,7 +1,6 @@
 package com.motherload.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.motherload.game.Screens.TitleScreen;
 

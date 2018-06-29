@@ -20,22 +20,22 @@ public class Block {
         this.y = y*50;
     }
     
-public Block(int x, int y){
+    public Block(int x, int y){
         Random rand = new Random();
-        if(rand.nextInt(14) == 0){
+        if(rand.nextInt(2) == 0){
             int r = rand.nextInt(99);
-            if(r<=5){
+            if(r<=20){
                 this.id = 1;
-            }else if(r>6 && r<60){ 
-                this.id = 2;
-            }else if(r>59 && r<80){
+            }else if(r>20 && r<30){ 
                 this.id = 3;
-            }else if(r>79 && r<95){
+            }else if(r>29 && r<55){
                 this.id = 4;
-            }else if(r>94 && r<98){
+            }else if(r>54 && r<75){
+                this.id = 6;
+            }else if(r>74 && r<80){
                 this.id = 5;
             }else{
-                this.id = 6;
+                this.id = 2;
             }
             
             switch(this.id){
